@@ -17,7 +17,7 @@ model : any =  {};
 // currentUser$ : Observable<User | null> = of(null);           // removed and directly used
 
   constructor(public accountService: AccountService,private router: Router,
-    private toastr: ToastrService) { }   
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
    // this.getCurrentUser();
@@ -26,7 +26,7 @@ model : any =  {};
 
   // getCurrentUser(){
   //   this.accountService.currentUser$.subscribe({
-  //     next: user => this.loggedIn = !!user,                       
+  //     next: user => this.loggedIn = !!user,
   //     error: error => console.log(error)
   //   })
   // }
@@ -35,13 +35,13 @@ model : any =  {};
     this.accountService.login(this.model).subscribe({
         next: _ => this.router.navigateByUrl('/members'),      //_ means in there is no any arguments ,used insted of ()
 
-        error: error => this.toastr.error(error.error)                              //console.log(error) 
-      })     
+        // error: error => this.toastr.error(error.error)         //because is going to interceptor now                      //console.log(error)
+      })
         //{
         // console.log(response);
        // console.log("this is called");
         //this.loggedIn = true;
-     // },    
+     // },
     // console.log(this.model);
   }
   logout(){
@@ -49,5 +49,5 @@ model : any =  {};
     this.accountService.logout();         //remove item from local storage
     this.router.navigateByUrl('/')
   }
- 
+
 }
