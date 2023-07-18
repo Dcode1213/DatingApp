@@ -1,6 +1,6 @@
 <div class="row">
     <h4 style="text-align: center; color:cornflowerblue ;">Members List</h4>                                                          
-    <div class="col-2" *ngFor="let member of members"> 
+    <div class="col-2" *ngFor="let member of members$ | async"> 
         <app-member-card [member]="member"></app-member-card>
        <!-- <p *ngFor="let member of members">{{member.knownAs}}</p>    -->
     </div>

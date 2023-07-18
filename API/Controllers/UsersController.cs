@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -46,11 +47,23 @@ namespace API.Controllers
             //return await context.Users.FindAsync(id);       
             // return user;    -- another way
         }
-                
+
+        [HttpPut] 
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await userRepository.getUserByUserNameAsync(username);
+
+            if (user == null) return NotFound();
+
+            mapper.Map(memberUpdateDto, user);
+            if (await userRepository.SaveAllAsync()) return NoContent();   //its return okay result (204) 
+            return BadRequest("Failed to update user");
+        }
 
         // public IActionResult Index()
         // {
         //     return View();
-        // }
+        // }    
     }
 }
