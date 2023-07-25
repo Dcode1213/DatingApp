@@ -44,7 +44,7 @@ galleryImages : NgxGalleryImage[] = [];
   }
 
   loadMember(){
-    const username = this.route.snapshot.paramMap.get('username')
+    const username = this.route.snapshot.paramMap.get('username')      //SNAPSHOT PENDING
     if(!username) return;
     this.memberService.getMember(username).subscribe({
       next : member => {
