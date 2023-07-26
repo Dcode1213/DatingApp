@@ -125,7 +125,7 @@ namespace API.Controllers
                 var result = await photoService.DeletePhotoAsync(photo.publicId);
                 if (result.Error != null) return BadRequest(result.Error);
 
-            }
+            }   
             user.Photos.Remove(photo);
             if (await userRepository.SaveAllAsync()) return Ok();
             return BadRequest("problem deleting photo");

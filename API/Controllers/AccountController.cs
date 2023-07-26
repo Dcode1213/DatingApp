@@ -2,6 +2,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -14,11 +15,13 @@ namespace API.Controllers
     {
         private readonly DataContext context;
         private readonly ITokenService tokenService;
+        private readonly IMapper mapper;
 
-        public AccountController(DataContext context,ITokenService tokenService)
+        public AccountController(DataContext context,ITokenService tokenService, IMapper mapper)
         {
             this.context=context;
             this.tokenService=tokenService;
+            this.mapper=mapper;
         }
 
         [HttpPost("register")]         // POST : api/account.register       -- EndPoint
@@ -28,17 +31,20 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
+
+            var user = mapper.Map<AppUser>(registerDto);
+
             using var hmac = new HMACSHA512();   //hashing algorithm
-            var user = new AppUser       //CREATED INSTANCE OF APPUSER CLASS
-            {
+            //var user = new AppUser       //CREATED INSTANCE OF APPUSER CLASS
+            //{
                 //UserName = username,  
                 //PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),    //converts string into array(Byte)
               
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.password)),  
-                PasswordSalt = hmac.Key
+                user.UserName = registerDto.Username.ToLower();
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.password)); 
+                user.PasswordSalt = hmac.Key;
 
-            };
+            //};
             context.Users.Add(user);
             await context.SaveChangesAsync();
             //return user;
@@ -47,6 +53,7 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = tokenService.CreateToken(user),
+                KnownAs = user.KnownAs
               
             };
         }
@@ -70,7 +77,8 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = tokenService.CreateToken(user),
-                  PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain).Url
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain).Url,
+                KnownAs = user.KnownAs
             };
         }
 
