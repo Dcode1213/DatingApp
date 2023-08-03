@@ -13,7 +13,7 @@ namespace API.Helpers
             //var username = resultContext.HttpContext.User.GetUsername();   -- for biq query
             var userId = resultContext.HttpContext.User.GetUserId();
             var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
-            var user = await repo.getUserByIdAsync(int.Parse(userId));
+            var user = await repo.getUserByIdAsync(userId);
             user.LastActive = DateTime.UtcNow;
             await repo.SaveAllAsync();
 

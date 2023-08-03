@@ -21,6 +21,9 @@ namespace API.Entities
         public string Country { get; set; }
         public List<Photo> Photos { get; set; } = new();      //relationship with another table called Photos
 
+        public List<UserLike> LikedByUsers { get; set; }      //many to many relationship
+        public List<UserLike> LikedUsers { get; set; }
+
         //public int GetAge()
         //{               
         //    return DateOfBirth.CalculateAge();

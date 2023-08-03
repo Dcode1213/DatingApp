@@ -23,6 +23,7 @@ namespace API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();               //for cloudinary photo upload
             services.AddScoped<LogUserActivity>();                           //for actionFilter
+            services.AddScoped<ILikesRepository, LikesRepository>();
             return services;   
         }
     }
