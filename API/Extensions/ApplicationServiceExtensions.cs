@@ -24,6 +24,7 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();               //for cloudinary photo upload
             services.AddScoped<LogUserActivity>();                           //for actionFilter
             services.AddScoped<ILikesRepository, LikesRepository>();
+            services.AddScoped<IMessageRepository,MessageRepository>();            
             return services;   
         }
     }
