@@ -30,7 +30,8 @@ namespace API.Controllers
             this.photoService=photoService;
             //this.context = context;  // instance
         }
-      //[AllowAnonymous]
+        //[AllowAnonymous]
+      //[Authorize(Roles = "Admin")]
       [HttpGet]
       public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery]UserParams userParams){
 
@@ -53,6 +54,7 @@ namespace API.Controllers
             // return users;
         }
 
+      //[Authorize(Roles = "Member")]
       [HttpGet("{username}")] 
       public async Task<ActionResult<MemberDto>> GetUser(string username){    //for id //id     //now username  //now MemberDto
 
